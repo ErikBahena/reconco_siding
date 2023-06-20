@@ -155,7 +155,7 @@ export default function Home() {
         </div>
 
         {/* apply a circular bg gradiant white */}
-        <div className="container gap-10 py-20">
+        {/* <div className="container gap-10 py-20">
           {estimatorStep === EstimatorStep.SelectType && (
             <div>
               s
@@ -225,7 +225,7 @@ export default function Home() {
               </div>
             </div>
           )}
-        </div>
+        </div> */}
       </main>
     </>
   );
