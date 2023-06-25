@@ -135,12 +135,27 @@ export default function Home() {
 
         {/* banner image */}
 
-        <div className="relative aspect-auto h-72 w-full">
+        <div className="relative aspect-auto h-[400px] w-full">
           <img
             src="/banner_6.png"
             alt="r&b siding"
             className="absolute inset-0 h-full w-full object-cover"
           />
+
+          {/* Shadow bg from dark to transparent, left to right */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
+
+          <div className="absolute inset-0 flex flex-col items-center">
+            <h1 className="text-4xl font-bold text-white">
+              Siding Installation & Repair
+            </h1>
+            <p className="text-white">
+              We offer a wide range of siding services to meet your needs.
+            </p>
+            <button className="mt-4 rounded-md bg-gold px-10 py-4 font-bold text-black">
+              Get a Free Estimate
+            </button>
+          </div>
         </div>
 
         <div className="container flex gap-10 py-20">
