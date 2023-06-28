@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface NavLinkProps {
   href: string;
@@ -11,7 +11,7 @@ const StyledNavLink = ({ href, children }: NavLinkProps) => {
   return (
     <a
       href={href}
-      className="border-b-2 border-transparent px-2 pb-1 text-sm  uppercase text-gray-200 transition-all duration-300 hover:border-yellow-400"
+      className="border-b-2 border-transparent px-2 pb-1 text-sm  uppercase text-gray-200 transition-all duration-300 hover:border-yellow-400 hover:text-white"
     >
       {children}
     </a>
@@ -23,11 +23,6 @@ const descriptionCards = [
     title: "Expert Installation",
     description:
       "Our skilled team of siding installers has the expertise to handle projects of any size and complexity. With meticulous attention to detail, we guarantee a flawless installation that exceeds your expectations.",
-  },
-  {
-    title: "Superior Siding Materials",
-    description:
-      "We source the highest quality siding materials to ensure durability, energy efficiency, and an appealing aesthetic for your home. With our premium selection, your siding will withstand the test of time.",
   },
   {
     title: "Competitive Pricing",
@@ -42,23 +37,37 @@ const descriptionCards = [
 ];
 
 enum EstimatorStep {
-  SelectType,
+  InputZipCode,
   SquareFootage,
   Result,
 }
 
 export default function Home() {
   const [estimatorStep, setEstimatorStep] = useState<EstimatorStep>(
-    EstimatorStep.SelectType
+    EstimatorStep.InputZipCode
   );
   const [sidingType, setSidingType] = useState("");
   const [squareFootage, setSquareFootage] = useState(0);
+  const [zipCode, setZipCode] = useState("");
+  const [zipCodeStatus, setZipCodeStatus] = useState<
+    "loading" | "valid" | "invalid"
+  >("valid"); // 'loading' | 'valid' | 'invalid
+
   const [price, setPrice] = useState(0);
 
   const handleSidingTypeChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setSidingType(event.target.value);
+  };
+
+  const handleZipCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setZipCode(event.target.value);
+  };
+
+  const handleZipCodeSubmit = () => {
+    // Perform zip code validation
+    // If zip code is valid, set estimatorStep to EstimatorStep.SquareFootage
   };
 
   const handleSquareFootageChange = (
@@ -80,6 +89,16 @@ export default function Home() {
     // Handle in-person estimate click event
   };
 
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    const imageElement = imageRef.current;
+
+    if (!imageElement) return;
+
+    imageElement.style.transform = "scale(1)";
+  }, []);
+
   return (
     <>
       <Head>
@@ -93,7 +112,7 @@ export default function Home() {
         <meta name="apple-mobile-web-app-status-bar-style" content="#000000" />
       </Head>
       <main className="flex min-h-screen flex-col items-center bg-[#17171E]">
-        <nav className="flex w-full max-w-7xl items-center justify-between rounded-md py-2">
+        <nav className="flex w-full max-w-5xl items-center justify-between rounded-md px-4 py-4 xl:px-0">
           {/* Logo */}
           <div className="flex items-center justify-center">
             <img src="/nav_logo.png" alt="r&b siding" className="h-auto w-24" />
@@ -135,28 +154,31 @@ export default function Home() {
 
         {/* banner image */}
 
-        <div className="relative flex aspect-auto h-[400px] w-full">
+        <div className="relative flex aspect-auto h-[500px] w-full overflow-hidden">
           <img
-            src="/banner_6.png"
+            src="/banner_7.png"
             alt="r&b siding"
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full scale-150 object-cover transition-all duration-[15s] ease-out"
+            ref={imageRef}
           />
 
           {/* Shadow bg from dark to transparent, left to right */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent"></div>
 
           {/* Content */}
-          <div className="absolute inset-0 mx-auto flex max-w-7xl flex-col items-start justify-center">
+          <div className="absolute inset-0 mx-auto flex max-w-5xl flex-col items-start justify-center px-4 xl:px-0">
             {/* gradient from gold2 to gold */}
-            <h1 className="bg-gradient-to-r from-lightGold via-lightGold to-darkGold bg-clip-text text-4xl font-bold uppercase text-transparent">
-              Siding Installation & Repair
+            <h1 className="bg-gradient-to-r from-yellow-500 to-lightGold bg-clip-text text-2xl font-bold uppercase text-transparent sm:text-3xl">
+              Turn Your Home Into a Work of Art
             </h1>
-            <p className="mt-3 max-w-xl text-xl font-medium uppercase text-white">
-              We offer a wide range of siding services to meet your needs.
+            <p className="mt-3 max-w-xl text-base font-medium uppercase text-white sm:text-lg">
+              Whether replacing old siding or installing new siding for the
+              first time, we have the knowledge that comes with siding thousands
+              of homes throughout Western Washington.
             </p>
 
             <button
-              className="mt-4 rounded-sm bg-yellow-300 px-10 py-4 text-lg font-semibold text-black
+              className="mt-4 rounded-sm bg-yellow-300 px-8 py-3 text-lg font-bold text-black
             transition-all duration-300 hover:bg-yellow-400"
             >
               Get a Free Estimate
@@ -164,21 +186,25 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="container mx-auto flex max-w-7xl gap-10 py-20">
+        <div className="container mx-auto flex max-w-5xl flex-col gap-10 px-4 py-20 md:flex-row xl:px-0">
           {descriptionCards.map((card, i) => (
-            <div key={i} className="flex flex-col gap-1">
-              <h2 className="font-serif font-semibold uppercase text-yellow-400">
+            <div key={i} className="flex max-w-md flex-col gap-1">
+              <h2 className="text-xl font-semibold uppercase text-yellow-400">
                 {card.title}
               </h2>
-              <p className="font-medium text-gray-100">{card.description}</p>
+              <p className="mt-1 font-medium text-gray-100">
+                {card.description}
+              </p>
+
+              <div className="mt-3 h-2 w-[55%] bg-yellow-300"></div>
             </div>
           ))}
         </div>
 
         {/* small height decorative element with half lightGold and other half lightGold, slash from top to bottom left in the middle  */}
-        <div className="relative h-16 w-full bg-gradient-to-r from-[#FF9800] to-[#FFC107]">
+        <div className="relative h-14 w-full bg-gradient-to-r from-[#FFC107] via-yellow-500 to-yellow-100">
           <div
-            className="absolute right-0 top-0 h-full w-1/3"
+            className="absolute right-0 top-0 h-full w-[40%]"
             style={{
               background: "linear-gradient(to bottom right, #fff307, #FFC107)",
               clipPath: "polygon(15% 0, 100% 0%, 100% 100%, 0% 100%)",
@@ -187,15 +213,60 @@ export default function Home() {
         </div>
 
         {/* white bg container */}
-        <div className="w-full flex bg-white gap-10 ">
-            <div className="flex max-w-7xl mx-auto flex-col gap-1">
-                <h2 className="font-serif font-bold text-4xl uppercase text-black">
-                    About Us
-                </h2>
-                <p className="font-medium text-black">
-                    R&B Siding is a family-owned and operated siding company serving the greater Seattle area. We specialize in siding installation, repair, and replacement for residential and commercial properties. With over 20 years of experience, we have the expertise to handle any siding project, big or small. Our team is committed to providing the highest quality workmanship and customer service. We pride ourselves on our attention to detail and our ability to exceed our customers’ expectations. We offer free consultations to help you determine the best siding solution for your home. Our team will work with you to find the perfect siding material, color, and style to suit your needs. We also offer competitive pricing and flexible financing options to make your siding project more affordable than ever. Contact us today to schedule your free consultation!
-                </p>
+        <div className="w-full bg-white">
+          <div className="container mx-auto flex max-w-5xl flex-col px-4 py-20 xl:px-0">
+            <h2 className="text-3xl font-bold uppercase text-black">
+              Labor Estimator
+            </h2>
+            <p className="font-medium text-black">
+              Get a rough estimate of our labor costs for your siding project.
+            </p>
+
+            {/* Start with a zip code step (to calculate local tax rates */}
+            <div className="mt-10">
+              {estimatorStep === EstimatorStep.InputZipCode && (
+                <>
+                  <h3 className="text-xl font-semibold uppercase text-black">
+                    Enter Your Zip Code
+                  </h3>
+
+                  <div className="mt-3 flex items-center gap-4">
+                    <input
+                      type="text"
+                      className="rounded-md bg-gray-100 px-4 py-2 text-gray-800"
+                      placeholder="Enter Zip Code"
+                      value={zipCode}
+                      onChange={handleZipCodeChange}
+                    />
+                    <button
+                      className="rounded-md bg-yellow-300 px-4 py-2 font-bold text-gray-900
+                transition-all duration-300 hover:bg-yellow-400"
+                      onClick={handleZipCodeSubmit}
+                    >
+                      Submit
+                    </button>
+                  </div>
+
+                  {/* Show error message if zip code is invalid */}
+                  {zipCodeStatus === "invalid" && (
+                    <p className="font-medium text-red-500">Invalid Zip Code</p>
+                  )}
+
+                  {/* Show loading spinner if loading */}
+                  {zipCodeStatus === "loading" && (
+                    <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-t-2 border-yellow-300"></div>
+                  )}
+
+                  {/* Show success message if zip code is valid */}
+                  {zipCodeStatus === "valid" && (
+                    <p className="font-medium text-green-500">
+                      Zip code successfully submitted!
+                    </p>
+                  )}
+                </>
+              )}
             </div>
+          </div>
         </div>
 
         {/* apply a circular bg gradiant white */}
@@ -274,3 +345,18 @@ export default function Home() {
     </>
   );
 }
+
+// R&B Siding is a family-owned and operated siding company serving
+// the greater Seattle area. We specialize in siding installation,
+// repair, and replacement for residential and commercial properties.
+// With over 20 years of experience, we have the expertise to handle
+// any siding project, big or small. Our team is committed to
+// providing the highest quality workmanship and customer service. We
+// pride ourselves on our attention to detail and our ability to
+// exceed our customers’ expectations. We offer free consultations to
+// help you determine the best siding solution for your home. Our
+// team will work with you to find the perfect siding material,
+// color, and style to suit your needs. We also offer competitive
+// pricing and flexible financing options to make your siding project
+// more affordable than ever. Contact us today to schedule your free
+// consultation!

@@ -8,6 +8,7 @@ export default {
       colors: {
         "gray-body": "#C6C6C6",
         lightGold: "#F1CD77",
+        mediumGold: "#D9A741",
         darkGold: "#BB853B",
       },
     },
