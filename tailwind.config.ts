@@ -7,7 +7,8 @@ export default {
       // add text color #717270 as body color
       colors: {
         "gray-body": "#C6C6C6",
-        gold: "hsl(41,94%,80%)",
+        lightGold: "#F1CD77",
+        darkGold: "#BB853B",
       },
     },
   },

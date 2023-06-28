@@ -11,7 +11,7 @@ const StyledNavLink = ({ href, children }: NavLinkProps) => {
   return (
     <a
       href={href}
-      className="border-b border-transparent px-2 pb-1 text-sm  uppercase text-gray-200 transition-all duration-300 hover:border-gold"
+      className="border-b-2 border-transparent px-2 pb-1 text-sm  uppercase text-gray-200 transition-all duration-300 hover:border-yellow-400"
     >
       {children}
     </a>
@@ -92,7 +92,7 @@ export default function Home() {
         <meta name="msapplication-navbutton-color" content="#000000" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#000000" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#1c1c1c] to-[#000000]">
+      <main className="flex min-h-screen flex-col items-center bg-[#17171E]">
         <nav className="flex w-full max-w-7xl items-center justify-between rounded-md py-2">
           {/* Logo */}
           <div className="flex items-center justify-center">
@@ -135,7 +135,7 @@ export default function Home() {
 
         {/* banner image */}
 
-        <div className="relative aspect-auto h-[400px] w-full">
+        <div className="relative flex aspect-auto h-[400px] w-full">
           <img
             src="/banner_6.png"
             alt="r&b siding"
@@ -143,30 +143,59 @@ export default function Home() {
           />
 
           {/* Shadow bg from dark to transparent, left to right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent"></div>
 
-          <div className="absolute inset-0 flex flex-col items-center">
-            <h1 className="text-4xl font-bold text-white">
+          {/* Content */}
+          <div className="absolute inset-0 mx-auto flex max-w-7xl flex-col items-start justify-center">
+            {/* gradient from gold2 to gold */}
+            <h1 className="bg-gradient-to-r from-lightGold via-lightGold to-darkGold bg-clip-text text-4xl font-bold uppercase text-transparent">
               Siding Installation & Repair
             </h1>
-            <p className="text-white">
+            <p className="mt-3 max-w-xl text-xl font-medium uppercase text-white">
               We offer a wide range of siding services to meet your needs.
             </p>
-            <button className="mt-4 rounded-md bg-gold px-10 py-4 font-bold text-black">
+
+            <button
+              className="mt-4 rounded-sm bg-yellow-300 px-10 py-4 text-lg font-semibold text-black
+            transition-all duration-300 hover:bg-yellow-400"
+            >
               Get a Free Estimate
             </button>
           </div>
         </div>
 
-        <div className="container flex gap-10 py-20">
+        <div className="container mx-auto flex max-w-7xl gap-10 py-20">
           {descriptionCards.map((card, i) => (
             <div key={i} className="flex flex-col gap-1">
-              <h2 className="font-serif font-semibold uppercase text-gold">
+              <h2 className="font-serif font-semibold uppercase text-yellow-400">
                 {card.title}
               </h2>
-              <p className="text-gray-100">{card.description}</p>
+              <p className="font-medium text-gray-100">{card.description}</p>
             </div>
           ))}
+        </div>
+
+        {/* small height decorative element with half lightGold and other half lightGold, slash from top to bottom left in the middle  */}
+        <div className="relative h-16 w-full bg-gradient-to-r from-[#FF9800] to-[#FFC107]">
+          <div
+            className="absolute right-0 top-0 h-full w-1/3"
+            style={{
+              background: "linear-gradient(to bottom right, #fff307, #FFC107)",
+              clipPath: "polygon(15% 0, 100% 0%, 100% 100%, 0% 100%)",
+            }}
+          ></div>
+        </div>
+
+        {/* white bg container */}
+        <div className="w-full flex bg-white gap-10 ">
+            <div className="flex max-w-7xl mx-auto flex-col gap-1">
+                <h2 className="font-serif font-bold text-4xl uppercase text-black">
+                    About Us
+                </h2>
+                <p className="font-medium text-black">
+                    R&B Siding is a family-owned and operated siding company serving the greater Seattle area. We specialize in siding installation, repair, and replacement for residential and commercial properties. With over 20 years of experience, we have the expertise to handle any siding project, big or small. Our team is committed to providing the highest quality workmanship and customer service. We pride ourselves on our attention to detail and our ability to exceed our customers’ expectations. We offer free consultations to help you determine the best siding solution for your home. Our team will work with you to find the perfect siding material, color, and style to suit your needs. We also offer competitive pricing and flexible financing options to make your siding project more affordable than ever. Contact us today to schedule your free consultation!
+                </p>
+            </div>
         </div>
 
         {/* apply a circular bg gradiant white */}
