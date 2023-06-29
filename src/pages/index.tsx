@@ -199,7 +199,7 @@ export default function Home() {
 
         {/* banner image */}
 
-        <div className="relative flex aspect-auto h-[500px] w-full overflow-hidden">
+        <div className="relative flex h-[500px] w-full overflow-hidden">
           <img
             src="/banner_7.png"
             alt="r&b siding"
