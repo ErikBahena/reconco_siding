@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import zipcodes from "zipcodes";
 
 interface NavLinkProps {
   href: string;
@@ -9,12 +10,13 @@ interface NavLinkProps {
 
 const StyledNavLink = ({ href, children }: NavLinkProps) => {
   return (
-    <a
+    <Link
       href={href}
       className="border-b-2 border-transparent px-2 pb-1 text-sm  uppercase text-gray-200 transition-all duration-300 hover:border-yellow-400 hover:text-white"
+      scroll={false}
     >
       {children}
-    </a>
+    </Link>
   );
 };
 
@@ -53,12 +55,13 @@ export default function Home() {
   const [estimatorStep, setEstimatorStep] = useState<EstimatorStep>(
     EstimatorStep.InputZipCode
   );
+
   const [sidingType, setSidingType] = useState("");
   const [squareFootage, setSquareFootage] = useState(0);
   const [zipCode, setZipCode] = useState("");
   const [zipCodeStatus, setZipCodeStatus] = useState<
-    "loading" | "valid" | "invalid"
-  >("valid"); // 'loading' | 'valid' | 'invalid
+    "loading" | "valid" | "invalid" | ""
+  >(""); // 'loading' | 'valid' | 'invalid
 
   const [price, setPrice] = useState(0);
 
@@ -68,19 +71,42 @@ export default function Home() {
     setSidingType(event.target.value);
   };
 
+  //   one liner
+  const isZipCodeValid = (zipCode: string) =>
+    /^[0-9]{0,5}$/.test(zipCode) && zipcodes.lookup(zipCode) !== undefined;
+
   const handleZipCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // filter only for numbers upto 5 digits
-    const numberRegex = /^[0-9]{0,5}$/;
     const value = event.target.value;
+    const isValid = isZipCodeValid(value);
 
-    if (!numberRegex.test(value)) return;
+    if (isValid) {
+      setZipCodeStatus("valid");
+    } else {
+      setZipCodeStatus("invalid");
+    }
+
+    if (value.length > 5) {
+      return;
+    }
 
     setZipCode(value);
   };
 
   const handleZipCodeSubmit = () => {
-    // Perform zip code validation
-    // If zip code is valid, set estimatorStep to EstimatorStep.SquareFootage
+    const isValid = isZipCodeValid(zipCode);
+
+    if (isValid) {
+      setZipCodeStatus("valid");
+      setEstimatorStep(EstimatorStep.SquareFootage);
+    } else {
+      setZipCodeStatus("invalid");
+      return;
+    }
+
+    if (zipCode.length > 5) {
+      setZipCodeStatus("invalid");
+    }
   };
 
   const handleSquareFootageChange = (
@@ -131,7 +157,7 @@ export default function Home() {
         <meta name="apple-mobile-web-app-status-bar-style" content="#000000" />
       </Head>
       <main className="flex min-h-screen flex-col items-center bg-[#17171E]">
-        <nav className="flex w-full max-w-5xl items-center justify-between rounded-md px-4 py-4 xl:px-0">
+        <nav className="flex w-full max-w-5xl items-center justify-between rounded-md px-6 py-4 xl:px-0">
           {/* Logo */}
           <div className="flex items-center justify-center">
             <img src="/nav_logo.png" alt="r&b siding" className="h-auto w-24" />
@@ -185,7 +211,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent"></div>
 
           {/* Content */}
-          <div className="absolute inset-0 mx-auto flex max-w-5xl flex-col items-start justify-center px-4 xl:px-0">
+          <div className="absolute inset-0 mx-auto flex max-w-5xl flex-col items-start justify-center px-6 xl:px-0">
             {/* gradient from gold2 to gold */}
             <h1 className="bg-gradient-to-r from-yellow-500 to-lightGold bg-clip-text text-2xl font-bold uppercase text-transparent sm:text-3xl">
               Turn Your Home Into a Work of Art
@@ -205,7 +231,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="container mx-auto flex max-w-5xl flex-col gap-10 px-4 py-20 md:flex-row xl:px-0">
+        <div className="container mx-auto flex max-w-5xl flex-col gap-10 px-6 py-20 md:flex-row xl:px-0">
           {descriptionCards.map((card, i) => (
             <div key={i} className="flex max-w-md flex-col gap-1">
               <h2 className="text-xl font-semibold uppercase text-yellow-400">
@@ -231,11 +257,8 @@ export default function Home() {
           ></div>
         </div>
 
-        {/* white bg container */}
-        <div className="w-full bg-white">
-          {/* wizard steps */}
-
-          <div className="container mx-auto flex max-w-5xl flex-col px-4 py-20 xl:px-0">
+        <div className="w-full bg-white" id="estimator">
+          <div className="container mx-auto flex max-w-5xl flex-col px-6 py-20 xl:px-0">
             <h2 className="text-xl font-bold uppercase text-black md:text-2xl">
               Labor Estimator
             </h2>
@@ -243,7 +266,7 @@ export default function Home() {
               Get a rough estimate of our labor costs for your siding project.
             </p>
 
-            <div className="flex w-full justify-between gap-4 py-3">
+            <div className="flex w-full flex-col justify-between md:gap-4 py-3 md:flex-row">
               {[...estimatorSteps].map((step) => {
                 if (step === 0)
                   return (
@@ -254,8 +277,10 @@ export default function Home() {
                       estimatorStep === EstimatorStep.InputZipCode
                         ? "text-gray-700"
                         : "text-gray-400"
-                    }
-                    `}
+                    }`}
+                      onClick={() =>
+                        setEstimatorStep(EstimatorStep.InputZipCode)
+                      }
                     >
                       1. ZIP CODE
                       <svg
@@ -282,7 +307,7 @@ export default function Home() {
                 if (step === 1)
                   return (
                     <div
-                        key={step}
+                      key={step}
                       className={`flex gap-2 text-lg font-semibold
                     ${
                       estimatorStep === EstimatorStep.SquareFootage
@@ -290,6 +315,9 @@ export default function Home() {
                         : "text-gray-400"
                     }
                     `}
+                      onClick={() =>
+                        setEstimatorStep(EstimatorStep.SquareFootage)
+                      }
                     >
                       2. SQUARE FOOTAGE
                       <svg
@@ -312,7 +340,7 @@ export default function Home() {
                 if (step === 2)
                   return (
                     <div
-                        key={step}
+                      key={step}
                       className={`flex gap-2 text-lg font-semibold
                     ${
                       estimatorStep === EstimatorStep.Result
@@ -320,6 +348,7 @@ export default function Home() {
                         : "text-gray-400"
                     }
                     `}
+                      onClick={() => setEstimatorStep(EstimatorStep.Result)}
                     >
                       3. Claim Estimate
                       <svg
@@ -342,46 +371,81 @@ export default function Home() {
             </div>
 
             {/* Start with a zip code step (to calculate local tax rates */}
-            <div className="mt-10">
+            <div className="rounded-md px-4 py-6 shadow-md md:mt-10">
               {estimatorStep === EstimatorStep.InputZipCode && (
-                <>
-                  <h3 className="text-xl font-semibold uppercase text-black">
-                    Enter Your Zip Code
-                  </h3>
+                <div className="flex flex-col justify-between gap-4 md:flex-row">
+                  {/* Show a map of the zip code area */}
+                  <div className="order-1 flex-1 md:order-none">
+                    <iframe
+                      title="map"
+                      src={`https://www.google.com/maps?q=${zipCode}&output=embed&z=9&fullscreencontrol=0`}
+                      className="aspect-video w-full rounded-md"
+                    ></iframe>
+                  </div>
 
-                  <div className="mt-3 flex items-center gap-4">
+                  <div className="flex flex-1 flex-col">
+                    <h3 className="text-xl font-semibold uppercase text-gray-800">
+                      Enter Your Zip Code
+                    </h3>
+
+                    <p className="text-sm font-medium text-gray-400">
+                      Used to calculate local tax rates
+                    </p>
+
                     <input
                       type="number"
-                      className="rounded-md bg-gray-100 px-4 py-2 text-gray-800"
+                      className={`mt-2 rounded border-2 bg-gray-100 px-4
+                      py-2 text-gray-800
+                      ${
+                        zipCodeStatus === "valid"
+                          ? "border-green-500"
+                          : "border-transparent"
+                      }
+                      ${
+                        zipCodeStatus === "invalid"
+                          ? "border-red-500"
+                          : "border-transparent"
+                      }
+                      ${
+                        zipCodeStatus === "valid"
+                          ? "focus:border-green-500 focus:outline-none"
+                          : ""
+                      }
+                      ${
+                        zipCodeStatus === "invalid"
+                          ? "focus:border-red-500 focus:outline-none"
+                          : ""
+                      }
+                      `}
                       placeholder="Enter Zip Code"
                       value={zipCode}
                       onChange={handleZipCodeChange}
                     />
                     <button
-                      className="rounded-md bg-yellow-300 px-4 py-2 font-bold text-gray-900
-                transition-all duration-300 hover:bg-yellow-400"
+                      className="mt-3 rounded-sm bg-yellow-300 px-4 py-2 font-bold text-gray-900 transition-all duration-300 hover:bg-yellow-400 disabled:bg-yellow-300 disabled:text-gray-900 disabled:opacity-50 disabled:hover:bg-yellow-300 disabled:hover:text-gray-900
+                "
                       onClick={handleZipCodeSubmit}
+                      disabled={zipCodeStatus === "invalid"}
                     >
-                      Submit
+                      Next
                     </button>
                   </div>
+                </div>
+              )}
 
-                  {/* Show error message if zip code is invalid */}
-                  {zipCodeStatus === "invalid" && (
-                    <p className="font-medium text-red-500">Invalid Zip Code</p>
-                  )}
+              {estimatorStep === EstimatorStep.SquareFootage && (
+                <>
+                  <h3 className="text-xl font-semibold uppercase text-gray-800">
+                    Enter Square Footage
+                  </h3>
+                </>
+              )}
 
-                  {/* Show loading spinner if loading */}
-                  {zipCodeStatus === "loading" && (
-                    <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-t-2 border-yellow-300"></div>
-                  )}
-
-                  {/* Show success message if zip code is valid */}
-                  {zipCodeStatus === "valid" && (
-                    <p className="font-medium text-green-500">
-                      Zip code successfully submitted!
-                    </p>
-                  )}
+              {estimatorStep === EstimatorStep.Result && (
+                <>
+                  <h3 className="text-xl font-semibold uppercase text-gray-800">
+                    Estimation Result
+                  </h3>
                 </>
               )}
             </div>
