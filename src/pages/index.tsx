@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import zipcodes from "zipcodes";
@@ -200,11 +201,14 @@ export default function Home() {
         {/* banner image */}
 
         <div className="relative flex h-[500px] w-full overflow-hidden">
-          <img
+          <Image
             src="/banner_7.png"
             alt="r&b siding"
             className="absolute inset-0 h-full w-full scale-150 object-cover transition-all duration-[15s] ease-out"
             ref={imageRef}
+            priority
+            fill
+            quality={100}
           />
 
           {/* Shadow bg from dark to transparent, left to right */}
@@ -266,7 +270,7 @@ export default function Home() {
               Get a rough estimate of our labor costs for your siding project.
             </p>
 
-            <div className="flex w-full flex-col justify-between md:gap-4 py-3 md:flex-row">
+            <div className="flex w-full flex-col justify-between py-3 md:flex-row md:gap-4">
               {[...estimatorSteps].map((step) => {
                 if (step === 0)
                   return (
