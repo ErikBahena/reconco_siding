@@ -200,6 +200,7 @@ export default function Home() {
 
         {/* banner image */}
 
+    {/* calc height as  */}
         <div className="relative flex h-[500px] w-full overflow-hidden">
           <Image
             src="/banner_7.png"
@@ -286,7 +287,7 @@ export default function Home() {
                         setEstimatorStep(EstimatorStep.InputZipCode)
                       }
                     >
-                      1. ZIP CODE
+                      1. Zip Code
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -323,7 +324,7 @@ export default function Home() {
                         setEstimatorStep(EstimatorStep.SquareFootage)
                       }
                     >
-                      2. SQUARE FOOTAGE
+                      2. Square Footage
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
