@@ -203,7 +203,7 @@ export default function Home() {
           <img
             src="/banner_7.png"
             alt="r&b siding"
-            className="absolute inset-0 h-full w-full scale-150 object-fill transition-all duration-[15s] ease-out"
+            className="absolute inset-0 h-full w-full scale-150 object-cover transition-all duration-[15s] ease-out"
             ref={imageRef}
           />
 
