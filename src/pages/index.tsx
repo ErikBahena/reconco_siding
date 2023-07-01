@@ -146,9 +146,7 @@ export default function Home() {
         {/* good seo description */}
         <meta
           name="description"
-          content="
-        R&B Siding is a family-owned and operated siding company serving the greater Seattle area. We specialize in siding installation, repair, and replacement for residential and commercial properties. With over 20 years of experience, we have the expertise to handle any siding project, big or small. Our team is committed to providing the highest quality workmanship and customer service. We pride ourselves on our attention to detail and our ability to exceed our customers’ expectations. We offer free consultations to help you determine the best siding solution for your home. Our team will work with you to find the perfect siding material, color, and style to suit your needs. We also offer competitive pricing and flexible financing options to make your siding project more affordable than ever. Contact us today to schedule your free consultation!
-        "
+          content="For over 20 years, R&B Siding has been providing high-quality siding installation services to homeowners throughout Western Washington. We are a family-owned and operated business that takes pride in our workmanship and customer service."
         />
         <link rel="icon" href="/favicon.png" />
 
@@ -481,6 +479,41 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      {/* Create the footer for this website with the right styling to match the site */}
+      <footer className="bg-[#1A1A22] py-10">
+  <div className="container mx-auto flex flex-col items-center gap-6">
+    <img
+      src="/nav_logo.png"
+      alt="r&b siding"
+      className="h-auto w-24"
+    />
+    <p className="text-gray-400 text-center max-w-md">
+      R&amp;B Siding is a reputable siding company serving Western Washington.
+      We specialize in siding installation and replacement. Our team is dedicated
+      to providing top-notch services to our customers.
+    </p>
+    <div className="flex gap-4">
+      <a
+        href="#"
+        className="text-white hover:text-yellow-400 transition-all duration-300"
+      >
+        Terms of Service
+      </a>
+      <a
+        href="#"
+        className="text-white hover:text-yellow-400 transition-all duration-300"
+      >
+        Privacy Policy
+      </a>
+    </div>
+    <p className="text-gray-400">
+      &copy; {new Date().getFullYear()} R&amp;B Siding. All rights reserved.
+    </p>
+  </div>
+</footer>
+
+      
     </>
   );
 }
@@ -502,18 +535,3 @@ const DecorativeDivider = ({ gray }: DecorativeDividerProps) => {
     </div>
   );
 };
-
-// R&B Siding is a family-owned and operated siding company serving
-// the greater Seattle area. We specialize in siding installation,
-// repair, and replacement for residential and commercial properties.
-// With over 20 years of experience, we have the expertise to handle
-// any siding project, big or small. Our team is committed to
-// providing the highest quality workmanship and customer service. We
-// pride ourselves on our attention to detail and our ability to
-// exceed our customers’ expectations. We offer free consultations to
-// help you determine the best siding solution for your home. Our
-// team will work with you to find the perfect siding material,
-// color, and style to suit your needs. We also offer competitive
-// pricing and flexible financing options to make your siding project
-// more affordable than ever. Contact us today to schedule your free
-// consultation!
