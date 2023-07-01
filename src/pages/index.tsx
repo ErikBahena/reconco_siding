@@ -153,9 +153,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.png" />
 
         {/* sets the theme color and background color for browsers */}
-        <meta name="theme-color" content="#000000" />
-        <meta name="msapplication-navbutton-color" content="#000000" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="#000000" />
+        <meta name="theme-color" content="#17171E" />
+        <meta name="msapplication-navbutton-color" content="#17171E" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="#17171E" />
       </Head>
       <main className="flex min-h-screen flex-col items-center bg-[#17171E]">
         <nav className="flex w-full max-w-5xl items-center justify-between rounded-md px-6 py-4 xl:px-0">
@@ -200,8 +200,8 @@ export default function Home() {
 
         {/* banner image */}
 
-    {/* calc height as  */}
-        <div className="relative flex h-[500px] w-full overflow-hidden">
+        {/* calc height as  */}
+        <div className="relative flex h-[500px] md:h-[550px] w-full overflow-hidden">
           <Image
             src="/banner_7.png"
             alt="r&b siding"
@@ -251,16 +251,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* small height decorative element with half lightGold and other half lightGold, slash from top to bottom left in the middle  */}
-        <div className="relative h-14 w-full bg-gradient-to-r from-[#FFC107] via-yellow-500 to-yellow-100">
-          <div
-            className="absolute right-0 top-0 h-full w-[40%]"
-            style={{
-              background: "linear-gradient(to bottom right, #fff307, #FFC107)",
-              clipPath: "polygon(15% 0, 100% 0%, 100% 100%, 0% 100%)",
-            }}
-          ></div>
-        </div>
+        <DecorativeDivider />
 
         <div className="w-full bg-white" id="estimator">
           <div className="container mx-auto flex max-w-5xl flex-col px-6 py-20 xl:px-0">
@@ -457,82 +448,66 @@ export default function Home() {
           </div>
         </div>
 
-        {/* apply a circular bg gradiant white */}
-        {/* <div className="container gap-10 py-20">
-          {estimatorStep === EstimatorStep.SelectType && (
-            <div>
-              s
-              <h2 className="mb-4 text-3xl font-bold text-white">
-                Select Siding Type
-              </h2>
-              <select
-                className="rounded-md bg-gray-100 px-4 py-2 text-gray-800"
-                value={sidingType}
-                onChange={handleSidingTypeChange}
-              >
-                <option value="">-- Select --</option>
-                <option value="New Installation">New Installation</option>
-                <option value="Repair Siding">Repair Siding</option>
-                <option value="Replace Siding">Replace Siding</option>
-              </select>
-              <button
-                className="mt-4 rounded-md bg-gold px-4 py-2 text-gray-900"
-                disabled={!sidingType}
-                onClick={() => setEstimatorStep(EstimatorStep.SquareFootage)}
-              >
-                Next
-              </button>
-            </div>
-          )}
+        <DecorativeDivider gray />
+        <div className="relative w-full bg-[#17171E]" id="gallery">
+          <div
+            className="absolute inset-0 w-[50%] -skew-x-[10deg] transform bg-[#1d1d27]"
+            style={{
+              clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 80%)",
+            }}
+          ></div>
 
-          {estimatorStep === EstimatorStep.SquareFootage && (
-            <div>
-              <h2 className="mb-4 text-3xl font-bold text-white">
-                Enter Square Footage
-              </h2>
-              <input
-                type="number"
-                className="rounded-md bg-gray-100 px-4 py-2 text-gray-800"
-                value={squareFootage}
-                onChange={handleSquareFootageChange}
-              />
-              <button
-                className="mt-4 rounded-md bg-gold px-4 py-2 text-gray-900"
-                disabled={!squareFootage}
-                onClick={calculatePrice}
-              >
-                Calculate
-              </button>
-            </div>
-          )}
+          <div className="container z-10 mx-auto flex max-w-5xl flex-col px-6 py-20 xl:px-0">
+            <h2 className="z-20 text-xl font-bold uppercase text-white md:text-2xl">
+              Our Work
+            </h2>
+            <p className="z-20 font-medium text-white">
+              See some of our recent projects.
+            </p>
 
-          {estimatorStep === EstimatorStep.Result && (
-            <div>
-              <h2 className="mb-4 text-3xl font-bold text-white">
-                Estimation Result
-              </h2>
-              <p className="text-white">Price: ${price}</p>
-              <div className="mt-4 flex gap-4">
-                <button
-                  className="rounded-md bg-gold px-4 py-2 text-gray-900"
-                  onClick={handleEmailClick}
-                >
-                  Email With Details
-                </button>
-                <button
-                  className="rounded-md bg-gold px-4 py-2 text-gray-900"
-                  onClick={handleEstimateClick}
-                >
-                  In Person Estimate
-                </button>
-              </div>
+            {/* responsive grid of lazy images */}
+            <div className="grid grid-cols-1 gap-6 py-6 sm:grid-cols-2 lg:grid-cols-3">
+              {/* iterate over an array from 1 to 8 but in random order */}
+              {Array.from({ length: 9 }, (_, i) => (
+                <div key={i} className="relative aspect-square shadow-xl">
+                  <Image
+                    key={i}
+                    src={`/gallery/gallery_${i + 1}.png`}
+                    alt="gallery image"
+                    className="aspect-square h-full w-full rounded-sm object-cover  transition-all duration-300 hover:cursor-zoom-in hover:opacity-90"
+                    draggable={false}
+                    // lazy load images
+                    priority={false}
+                    fill
+                    quality={100}
+                  />
+                </div>
+              ))}
             </div>
-          )}
-        </div> */}
+          </div>
+        </div>
       </main>
     </>
   );
 }
+
+interface DecorativeDividerProps {
+  gray?: boolean;
+}
+
+const DecorativeDivider = ({ gray }: DecorativeDividerProps) => {
+  return (
+    <div className="relative h-14 w-full bg-gradient-to-r from-[#FFC107] via-yellow-500 to-yellow-100">
+      <div
+        className="absolute right-0 top-0 h-full w-[40%]"
+        style={{
+          background: "linear-gradient(to bottom right, #fff307, #FFC107)",
+          clipPath: "polygon(15% 0, 100% 0%, 100% 100%, 0% 100%)",
+        }}
+      ></div>
+    </div>
+  );
+};
 
 // R&B Siding is a family-owned and operated siding company serving
 // the greater Seattle area. We specialize in siding installation,
