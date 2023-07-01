@@ -468,7 +468,7 @@ export default function Home() {
                     src={`/gallery/gallery_${i + 1}.png`}
                     alt="gallery image"
                     className="aspect-square h-full w-full rounded-sm object-cover  transition-all duration-300 hover:scale-105 hover:cursor-zoom-in
-                    hover:opacity-90"
+                    lg:hover:opacity-90"
                     draggable={false}
                     // lazy load images
                     priority={false}
