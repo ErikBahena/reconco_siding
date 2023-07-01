@@ -201,7 +201,7 @@ export default function Home() {
         {/* banner image */}
 
         {/* calc height as  */}
-        <div className="relative flex h-[500px] md:h-[550px] w-full overflow-hidden">
+        <div className="relative flex h-[500px] w-full overflow-hidden md:h-[550px]">
           <Image
             src="/banner_7.png"
             alt="r&b siding"
@@ -467,7 +467,8 @@ export default function Home() {
                     key={i}
                     src={`/gallery/gallery_${i + 1}.png`}
                     alt="gallery image"
-                    className="aspect-square h-full w-full rounded-sm object-cover  transition-all duration-300 hover:cursor-zoom-in hover:opacity-90"
+                    className="aspect-square h-full w-full rounded-sm object-cover  transition-all duration-300 hover:scale-105 hover:cursor-zoom-in
+                    hover:opacity-90"
                     draggable={false}
                     // lazy load images
                     priority={false}
