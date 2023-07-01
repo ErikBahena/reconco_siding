@@ -450,13 +450,6 @@ export default function Home() {
 
         <DecorativeDivider gray />
         <div className="relative w-full bg-[#17171E]" id="gallery">
-          {/* <div
-            className="absolute inset-0 w-[50%] -skew-x-[10deg] transform bg-[#1d1d27]"
-            style={{
-              clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 80%)",
-            }}
-          ></div> */}
-
           <div className="container z-10 mx-auto flex max-w-5xl flex-col px-6 py-20 xl:px-0">
             <h2 className="z-20 text-xl font-bold uppercase text-white md:text-2xl">
               Our Work
