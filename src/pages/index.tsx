@@ -488,7 +488,7 @@ export default function Home() {
       alt="r&b siding"
       className="h-auto w-24"
     />
-    <p className="text-gray-400 text-center max-w-md">
+    <p className="text-gray-400 text-center max-w-md px-6">
       R&amp;B Siding is a reputable siding company serving Western Washington.
       We specialize in siding installation and replacement. Our team is dedicated
       to providing top-notch services to our customers.
