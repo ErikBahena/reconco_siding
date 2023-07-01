@@ -461,7 +461,7 @@ export default function Home() {
             <h2 className="z-20 text-xl font-bold uppercase text-white md:text-2xl">
               Our Work
             </h2>
-            <p className="z-20 font-medium text-white">
+            <p className="z-20 font-medium text-gray-400">
               See some of our recent projects.
             </p>
 
