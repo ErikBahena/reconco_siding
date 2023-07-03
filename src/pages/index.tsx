@@ -116,6 +116,10 @@ export default function Home() {
     setSquareFootage(Number(event.target.value));
   };
 
+  const handleSquareFootageSubmit = () => {
+    setEstimatorStep(EstimatorStep.Result);
+  };
+
   const calculatePrice = () => {
     // Perform price calculation based on sidingType and squareFootage
     // Set the calculated price using setPrice
@@ -266,7 +270,7 @@ export default function Home() {
                   return (
                     <div
                       key={step}
-                      className={`flex items-center gap-2 text-lg font-semibold
+                      className={`flex items-center gap-2 text-lg font-semibold hover:cursor-pointer
                     ${
                       estimatorStep === EstimatorStep.InputZipCode
                         ? "text-gray-700"
@@ -302,7 +306,7 @@ export default function Home() {
                   return (
                     <div
                       key={step}
-                      className={`flex gap-2 text-lg font-semibold
+                      className={`flex gap-2 text-lg font-semibold hover:cursor-pointer
                     ${
                       estimatorStep === EstimatorStep.SquareFootage
                         ? "text-gray-700"
@@ -335,7 +339,7 @@ export default function Home() {
                   return (
                     <div
                       key={step}
-                      className={`flex gap-2 text-lg font-semibold
+                      className={`flex gap-2 text-lg font-semibold hover:cursor-pointer
                     ${
                       estimatorStep === EstimatorStep.Result
                         ? "text-gray-700"
@@ -429,9 +433,56 @@ export default function Home() {
 
               {estimatorStep === EstimatorStep.SquareFootage && (
                 <>
-                  <h3 className="text-xl font-semibold uppercase text-gray-800">
-                    Enter Square Footage
-                  </h3>
+                  <div className="flex flex-col gap-4 md:flex-row">
+                    <div className="order-1 flex flex-1 md:order-none">
+                      <Image
+                        src="/estimator_1.png"
+                        alt="estimator"
+                        className="mx-auto aspect-square h-auto w-3/4 rounded-md object-cover"
+                        width={700}
+                        height={700}
+                        draggable={false}
+                      />
+                    </div>
+
+                    <div className="flex flex-1 flex-col">
+                      <h3 className="text-xl font-semibold uppercase text-gray-800">
+                        Enter Square Footage
+                      </h3>
+
+                      <p className="text-sm font-medium text-gray-400">
+                        Used to calculate the amount of materials needed
+                      </p>
+
+                      <div className="text-5xl font-bold text-gray-800">
+                        {numberWithCommas(squareFootage)}
+
+                        <span className="text-2xl font-medium text-gray-400">
+                          {" "}
+                          sqft
+                        </span>
+                      </div>
+
+                      <input
+                        type="range"
+                        min={0}
+                        max={10000}
+                        step={100}
+                        value={squareFootage}
+                        onChange={handleSquareFootageChange}
+                        className="mt-4 h-2 w-full appearance-none rounded-sm bg-gray-200 focus:outline-none"
+                      />
+
+                      <button
+                        className="mt-3 w-full rounded-sm bg-yellow-300 px-4 py-2 font-bold text-gray-900 transition-all duration-300 hover:bg-yellow-400 disabled:bg-yellow-300 disabled:text-gray-900 disabled:opacity-50 disabled:hover:bg-yellow-300 disabled:hover:text-gray-900
+                "
+                        onClick={handleSquareFootageSubmit}
+                        disabled={squareFootage === 0}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
                 </>
               )}
 
@@ -482,38 +533,34 @@ export default function Home() {
 
       {/* Create the footer for this website with the right styling to match the site */}
       <footer className="bg-[#1A1A22] py-10">
-  <div className="container mx-auto flex flex-col items-center gap-6">
-    <img
-      src="/nav_logo.png"
-      alt="r&b siding"
-      className="h-auto w-24"
-    />
-    <p className="text-gray-400 text-center max-w-md px-6">
-      R&amp;B Siding is a reputable siding company serving Western Washington.
-      We specialize in siding installation and replacement. Our team is dedicated
-      to providing top-notch services to our customers.
-    </p>
-    <div className="flex gap-4">
-      <a
-        href="#"
-        className="text-white hover:text-yellow-400 transition-all duration-300"
-      >
-        Terms of Service
-      </a>
-      <a
-        href="#"
-        className="text-white hover:text-yellow-400 transition-all duration-300"
-      >
-        Privacy Policy
-      </a>
-    </div>
-    <p className="text-gray-400">
-      &copy; {new Date().getFullYear()} R&amp;B Siding. All rights reserved.
-    </p>
-  </div>
-</footer>
-
-      
+        <div className="container mx-auto flex flex-col items-center gap-6">
+          <img src="/nav_logo.png" alt="r&b siding" className="h-auto w-24" />
+          <p className="max-w-md px-6 text-center text-gray-400">
+            R&amp;B Siding is a reputable siding company serving Western
+            Washington. We specialize in siding installation and replacement.
+            Our team is dedicated to providing top-notch services to our
+            customers.
+          </p>
+          <div className="flex gap-4">
+            <a
+              href="#"
+              className="text-white transition-all duration-300 hover:text-yellow-400"
+            >
+              Terms of Service
+            </a>
+            <a
+              href="#"
+              className="text-white transition-all duration-300 hover:text-yellow-400"
+            >
+              Privacy Policy
+            </a>
+          </div>
+          <p className="text-gray-400">
+            &copy; {new Date().getFullYear()} R&amp;B Siding. All rights
+            reserved.
+          </p>
+        </div>
+      </footer>
     </>
   );
 }
@@ -535,3 +582,8 @@ const DecorativeDivider = ({ gray }: DecorativeDividerProps) => {
     </div>
   );
 };
+
+// function that takes in a number and returns the numbe with commas using new Intl.NumberFormat
+function numberWithCommas(x: number) {
+  return new Intl.NumberFormat().format(x);
+}
