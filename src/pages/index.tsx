@@ -52,29 +52,31 @@ const estimatorSteps = [
   EstimatorStep.Result,
 ];
 
+// price per square foot
+const PRICE_PER_SQUARE_FOOT = 1.5;
+
 export default function Home() {
   const [estimatorStep, setEstimatorStep] = useState<EstimatorStep>(
     EstimatorStep.InputZipCode
   );
 
-  const [sidingType, setSidingType] = useState("");
-  const [squareFootage, setSquareFootage] = useState(0);
+  const [estimate, setEstimate] = useState(0);
+
+  const [squareFootage, setSquareFootage] = useState<number>(0);
   const [zipCode, setZipCode] = useState("");
   const [zipCodeStatus, setZipCodeStatus] = useState<
     "loading" | "valid" | "invalid" | ""
-  >(""); // 'loading' | 'valid' | 'invalid
+  >("");
 
-  const [price, setPrice] = useState(0);
+  const [email, setEmail] = useState("");
+  const [emailStatus, setEmailStatus] = useState<
+    "loading" | "valid" | "invalid" | ""
+  >("");
 
-  const handleSidingTypeChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setSidingType(event.target.value);
-  };
-
-  //   one liner
   const isZipCodeValid = (zipCode: string) =>
-    /^[0-9]{0,5}$/.test(zipCode) && zipcodes.lookup(zipCode) !== undefined;
+    /^[0-9]{0,5}$/.test(zipCode) &&
+    zipcodes.lookup(zipCode) !== undefined &&
+    zipcodes.lookup(zipCode)?.state === "WA";
 
   const handleZipCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // filter only for numbers upto 5 digits
@@ -114,23 +116,44 @@ export default function Home() {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setSquareFootage(Number(event.target.value));
+    setEstimate(Number(event.target.value) * PRICE_PER_SQUARE_FOOT);
   };
 
   const handleSquareFootageSubmit = () => {
     setEstimatorStep(EstimatorStep.Result);
   };
 
-  const calculatePrice = () => {
-    // Perform price calculation based on sidingType and squareFootage
-    // Set the calculated price using setPrice
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(event.target.value);
+
+    if (isValid) {
+      setEmailStatus("valid");
+    }
+
+    if (!isValid) {
+      setEmailStatus("invalid");
+    }
+
+    if (event.target.value.length === 0) {
+      setEmailStatus("invalid");
+    }
+
+    setEmail(event.target.value);
   };
 
-  const handleEmailClick = () => {
-    // Handle email click event
-  };
+  const handleEmailSubmit = () => {
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const handleEstimateClick = () => {
-    // Handle in-person estimate click event
+    if (isValid) {
+      setEmailStatus("valid");
+    }
+
+    if (!isValid) {
+      setEmailStatus("invalid");
+      return;
+    }
+
+    setEmailStatus("valid");
   };
 
   const imageRef = useRef<HTMLImageElement>(null);
@@ -369,7 +392,7 @@ export default function Home() {
             </div>
 
             {/* Start with a zip code step (to calculate local tax rates */}
-            <div className="rounded-md px-4 py-6 shadow-md md:mt-10">
+            <div className="rounded-md py-6 md:mt-10 md:px-4 md:shadow-md">
               {estimatorStep === EstimatorStep.InputZipCode && (
                 <div className="flex flex-col justify-between gap-4 md:flex-row">
                   {/* Show a map of the zip code area */}
@@ -387,7 +410,7 @@ export default function Home() {
                     </h3>
 
                     <p className="text-sm font-medium text-gray-400">
-                      Used to calculate local tax rates
+                      Used to ensure project is located in Washington State
                     </p>
 
                     <input
@@ -489,9 +512,76 @@ export default function Home() {
 
               {estimatorStep === EstimatorStep.Result && (
                 <>
-                  <h3 className="text-xl font-semibold uppercase text-gray-800">
-                    Estimation Result
-                  </h3>
+                  <div className="flex flex-col gap-4 md:flex-row">
+                    <div className="flex flex-1 flex-col">
+                      <h3 className="text-xl font-semibold uppercase text-gray-800">
+                        Your Labor Cost Estimate
+                      </h3>
+
+                      <p className="text-sm font-medium text-gray-400">
+                        Based on your zip code and square footage
+                      </p>
+
+                      <div className="text-5xl font-bold text-gray-800">
+                        ${numberWithCommas(estimate)}
+                        <span className="text-2xl font-medium text-gray-400">
+                          {" "}
+                          USD
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-1 flex-col">
+                      <h3 className="text-xl font-semibold uppercase text-gray-800">
+                        Claim Your Estimate
+                      </h3>
+
+                      <p className="text-sm font-medium text-gray-400">
+                        Enter your email to claim your estimate
+                      </p>
+
+                      <div className="flex flex-col">
+                        <input
+                          type="email"
+                          className={`mt-2 rounded border-2 bg-gray-100 px-4
+                      py-2 text-gray-800
+                      ${
+                        emailStatus === "valid"
+                          ? "border-green-500"
+                          : "border-transparent"
+                      }
+                      ${
+                        emailStatus === "invalid"
+                          ? "border-red-500"
+                          : "border-transparent"
+                      }
+                      ${
+                        emailStatus === "valid"
+                          ? "focus:border-green-500 focus:outline-none"
+                          : ""
+                      }
+                      ${
+                        emailStatus === "invalid"
+                          ? "focus:border-red-500 focus:outline-none"
+                          : ""
+                      }
+                      `}
+                          placeholder="Enter Email"
+                          value={email}
+                          onChange={handleEmailChange}
+                        />
+
+                        <button
+                          className="mt-3 rounded-sm bg-yellow-300 px-4 py-2 font-bold text-gray-900 transition-all duration-300 hover:bg-yellow-400 disabled:bg-yellow-300 disabled:text-gray-900 disabled:opacity-50 disabled:hover:bg-yellow-300 disabled:hover:text-gray-900
+                "
+                          onClick={handleEmailSubmit}
+                          disabled={emailStatus === "invalid"}
+                        >
+                          Claim Estimate
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </>
               )}
             </div>
