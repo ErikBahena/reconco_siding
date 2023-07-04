@@ -255,12 +255,14 @@ export default function Home() {
               of homes throughout Western Washington.
             </p>
 
-            <button
+            <Link
+              href="#contact"
               className="mt-4 rounded-sm bg-yellow-300 px-8 py-3 text-lg font-bold text-black
             transition-all duration-300 hover:bg-yellow-400"
+            scroll={false}
             >
               Get a Free Estimate
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -666,7 +668,7 @@ export default function Home() {
               <div className="flex flex-col gap-2 md:flex-row md:gap-4">
                 <input
                   type="text"
-                  className="flex-1 rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:border-yellow-300 focus:outline-none"
+                  className="flex-1 rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:outline-none"
                   placeholder="First Name"
                   required
                   pattern="[A-Za-z]+"
@@ -675,7 +677,7 @@ export default function Home() {
                 />
                 <input
                   type="text"
-                  className="flex-1 rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:border-yellow-300 focus:outline-none"
+                  className="flex-1 rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:outline-none"
                   placeholder="Last Name"
                   required
                   pattern="[A-Za-z]+"
@@ -687,13 +689,13 @@ export default function Home() {
               <div className="flex flex-col gap-2 md:flex-row md:gap-4">
                 <input
                   type="email"
-                  className="flex-1 rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:border-yellow-300 focus:outline-none"
+                  className="flex-1 rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:outline-none"
                   placeholder="example@gmail.com"
                   required
                 />
                 <input
                   type="tel"
-                  className="flex-1 rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:border-yellow-300 focus:outline-none"
+                  className="flex-1 rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:outline-none"
                   placeholder="(123)-456-7890"
                   required
                   minLength={10}
@@ -702,7 +704,7 @@ export default function Home() {
               </div>
 
               <textarea
-                className="rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:border-yellow-300 focus:outline-none"
+                className="rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:outline-none"
                 placeholder="Optional Message"
                 rows={5}
               ></textarea>
