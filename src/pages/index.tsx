@@ -2,6 +2,9 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+
+// third party libraries
+import toast from "react-hot-toast";
 import zipcodes from "zipcodes";
 
 interface NavLinkProps {
@@ -261,7 +264,10 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="container mx-auto flex max-w-5xl flex-col gap-10 px-6 py-20 md:flex-row xl:px-0">
+        <div
+          id="about"
+          className="container mx-auto flex max-w-5xl flex-col gap-10 px-6 py-20 md:flex-row xl:px-0"
+        >
           {descriptionCards.map((card, i) => (
             <div key={i} className="flex max-w-md flex-col gap-1">
               <h2 className="text-xl font-semibold uppercase text-yellow-400">
@@ -461,7 +467,9 @@ export default function Home() {
                       <Image
                         src="/estimator_1.png"
                         alt="estimator"
-                        className="mx-auto aspect-square h-auto w-3/4 rounded-md object-cover"
+                        className={`mx-auto aspect-square h-auto w-3/4 rounded-md object-cover transition-all duration-300
+                        ${squareFootage === 0 ? "opacity-75" : "opacity-100"}
+                        `}
                         width={700}
                         height={700}
                         draggable={false}
@@ -620,10 +628,98 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        <DecorativeDivider />
+
+        <div className="relative w-full bg-white" id="contact">
+          <div className="container z-10 mx-auto flex max-w-5xl flex-col px-6 py-20 xl:px-0">
+            <h2 className="z-20 text-xl font-bold uppercase text-black md:text-2xl">
+              Contact Us
+            </h2>
+            <p className="z-20 font-medium text-gray-400">
+              Get in touch with us today.
+            </p>
+
+            {/* Responsive contact form, First Name, Last Name, Email, Phone, Address */}
+
+            <form
+              className="mt-6 flex flex-col gap-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+
+                toast.success("We'll be with you shortly, thank you!");
+
+                // console.log(
+                //   "First Name:",
+                //   e.target[0].value,
+                //   "Last Name:",
+                //   e.target[1].value,
+                //   "Email:",
+                //   e.target[2].value,
+                //   "Phone:",
+                //   e.target[3].value,
+                //   "Message:",
+                //   e.target[4].value
+                // );
+              }}
+            >
+              <div className="flex flex-col gap-2 md:flex-row md:gap-4">
+                <input
+                  type="text"
+                  className="flex-1 rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:border-yellow-300 focus:outline-none"
+                  placeholder="First Name"
+                  required
+                  pattern="[A-Za-z]+"
+                  title="Only letters"
+                  minLength={1}
+                />
+                <input
+                  type="text"
+                  className="flex-1 rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:border-yellow-300 focus:outline-none"
+                  placeholder="Last Name"
+                  required
+                  pattern="[A-Za-z]+"
+                  title="Only letters"
+                  minLength={1}
+                />
+              </div>
+
+              <div className="flex flex-col gap-2 md:flex-row md:gap-4">
+                <input
+                  type="email"
+                  className="flex-1 rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:border-yellow-300 focus:outline-none"
+                  placeholder="example@gmail.com"
+                  required
+                />
+                <input
+                  type="tel"
+                  className="flex-1 rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:border-yellow-300 focus:outline-none"
+                  placeholder="(123)-456-7890"
+                  required
+                  minLength={10}
+                  maxLength={10}
+                />
+              </div>
+
+              <textarea
+                className="rounded border-2 bg-gray-100 px-4 py-2 text-gray-800 focus:border-yellow-300 focus:outline-none"
+                placeholder="Optional Message"
+                rows={5}
+              ></textarea>
+
+              <button
+                className="rounded-sm bg-yellow-300 px-4 py-2 font-bold text-gray-900 transition-all duration-300 hover:bg-yellow-400"
+                type="submit"
+              >
+                Send
+              </button>
+            </form>
+          </div>
+        </div>
       </main>
 
       {/* Create the footer for this website with the right styling to match the site */}
-      <footer className="bg-[#1A1A22] py-10">
+      <footer className="bg-[#17171E] py-10">
         <div className="container mx-auto flex flex-col items-center gap-6">
           <img src="/nav_logo.png" alt="r&b siding" className="h-auto w-24" />
           <p className="max-w-md px-6 text-center text-gray-400">
