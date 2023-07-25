@@ -56,7 +56,7 @@ const estimatorSteps = [
 ];
 
 // price per square foot
-const PRICE_PER_SQUARE_FOOT = 1.5;
+const PRICE_PER_SQUARE_FOOT = 4.50;
 
 export default function Home() {
   const [estimatorStep, setEstimatorStep] = useState<EstimatorStep>(
@@ -506,6 +506,8 @@ export default function Home() {
                         onChange={handleSquareFootageChange}
                         className="mt-4 h-2 w-full appearance-none rounded-sm bg-gray-200 focus:outline-none"
                       />
+
+                      {/* project type, new install, or reinstallation */}
 
                       <button
                         className="mt-3 w-full rounded-sm bg-yellow-300 px-4 py-2 font-bold text-gray-900 transition-all duration-300 hover:bg-yellow-400 disabled:bg-yellow-300 disabled:text-gray-900 disabled:opacity-50 disabled:hover:bg-yellow-300 disabled:hover:text-gray-900
